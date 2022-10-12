@@ -62,16 +62,20 @@ type hardDisk struct {
 }
 
 func getDiskUsage() []hardDisk {
-	var listOfDisks []hardDisk
+	listOfDisks := make([]hardDisk, 0)
 	parts, _ := disk.Partitions(false)
 	for _, i := range parts {
 		if !strings.Contains(i.Device, "loop") {
 			d, _ := disk.Usage(i.Mountpoint)
-			listOfDisks = append(listOfDisks,
-				hardDisk{name: i.Mountpoint, size: int(d.UsedPercent)})
+			if d != nil {
+				listOfDisks = append(listOfDisks,
+					hardDisk{name: i.Mountpoint, size: int(d.UsedPercent)})
+
+			}
 		}
 
 	}
+
 	return listOfDisks
 }
 
@@ -154,7 +158,6 @@ func writeLines(ctx context.Context, t *text.Text, delay time.Duration) {
 }
 
 func main() {
-
 	t, err := tcell.New()
 	if err != nil {
 		panic(err)
