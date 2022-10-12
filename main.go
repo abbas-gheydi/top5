@@ -22,9 +22,9 @@ import (
 )
 
 var lables = []string{
-	"CPU",
-	"RAM",
-	"LOAD",
+	"%CPU",
+	"%RAM",
+	"%LOAD",
 }
 
 type netstat struct {
